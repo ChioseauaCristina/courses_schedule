@@ -1,0 +1,15 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+<body style="background-color: #a29797">
+    <div style="display: flex; flex-direction: column;  align-items: center; text-align: center; margin-top: 50px ">
+        <h1 style="padding-bottom: 30px">Login</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{  form.as_p }}
+            <input type="submit" value="Login" class="btn btn-outline-secondary" style="border-radius: 10px; background-color: lavender">
+        </form>
+    </div>
+</body>

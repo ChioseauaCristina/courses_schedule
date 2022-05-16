@@ -1,0 +1,72 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+{% load fontawesome_5 %}
+{% fontawesome_5_static %}
+
+<body style="background-color: #a29797">
+    <div style="margin: 25px">
+        <div style="display: flex; flex-direction: column; align-items: center">
+            {%  if request.user.is_authenticated %}
+                <h3>User: {{ request.user }}</h3>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary" style="background-color: lavender; border-radius: 10px; margin: 10px 0">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary" style="background-color: lavender; border-radius: 10px; margin: 10px 0">Login</a>
+            {%  endif %}
+        </div>
+
+
+        <form method="GET" style="margin-bottom: unset">
+            <h4 style="margin-left: 20px">Search:</h4>
+            <div style="display: flex; align-items: center">
+                <input type="text" class="form-control .bg-light col-sm-3" name="search-text" value={{ search_input }}>
+                <input type="submit" value="Search" class="btn btn-outline-secondary btn-sm" style="background-color: lavender; border-radius: 10px; margin: 10px 3px;">
+            </div>
+
+        </form>
+        <div style="display: flex; flex-direction: column; margin-bottom: 20px; ">
+        {% for course in filtered_courses %}
+            <span class="col-sm-3" style="border-radius: 10px; margin-bottom: 2px; background-color: lavender">{{ course }} {{ course.day }} {{ course.start_hour }} {{ course.end_hour }}</span>
+        {% endfor %}
+        </div>
+
+        <h3>Schedule</h3>
+        <div style="display: flex">
+        {%  for day in days %}
+            <div style="display: flex; flex-direction: column; border: 1px solid black; background-color: lightsteelblue; border-radius: 10px; margin: 0 1px;">
+            <b style="margin: 0 100px">{{ day }}</b>
+            <br>
+                {% for course in courses %}
+                    {% if course.day == day %}
+                        <div style="display: flex; justify-content: center; background-color: lavender; border-radius: 10px; ">
+                            <p style="margin: 0 5px">{{ course.title }} {{ course.start_hour }}</p>
+                            <a href="{%  url 'update_course' course.id %}">
+                                <i class="fas fa-pen" style="color:black; margin: 5px 5px;"></i>
+                            </a>
+                            <a href="{%  url 'delete_course' course.id %}">
+                                <i class="fas fa-trash" style="color:black; margin: 5px 5px;"></i>
+                            </a>
+                        </div>
+                        <br>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+        </div>
+
+        <h5 style="margin-top: 50px">Add a course</h5>
+
+        <form method="POST">
+            {% csrf_token %}
+            Class title:
+            {{ form.title }}
+            Start hour:
+            {{ form.start_hour }}
+            End hour:
+            {{ form.end_hour }}
+            Day:
+            {{ form.day }}
+            <input type="submit" name="Create course" class="btn btn-outline-secondary" style="border-radius: 10px; margin-left: 15px; background-color: lavender">
+        </form>
+    </div>
+</body>

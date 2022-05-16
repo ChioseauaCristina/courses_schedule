@@ -1,0 +1,15 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+
+<body style="background-color: #a29797">
+    <div style="margin: 40px">
+        <h1>Register</h1>
+
+        <form method="POST">
+            {% csrf_token %}
+            {{  form.as_p }}
+            <input type="submit" value="Register">
+        </form>
+    </div>
+</body>
